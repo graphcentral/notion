@@ -5,6 +5,13 @@
   "main": "dist/lib.js",
   "types": "dist/lib.d.ts",
   "files": ["dist"],
+  "bugs": {
+    "url": "https://github.com/graphcentral/notion/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/graphcentral/notion.git"
+  },
   "scripts": {
     "dev": "tsup index.ts --onSuccess \"node --loader=ts-node/esm dist/index.mjs\"",
     "compile": "tsup index.ts",
