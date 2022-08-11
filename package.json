@@ -1,0 +1,35 @@
+{
+  "name": "@graphcentral/root",
+  "version": "1.0.0",
+  "repository": "https://github.com/graphcentral/notion.git",
+  "author": "9oelM <hj923@hotmail.com>",
+  "license": "MIT",
+  "description": "Notion utilities for graph",
+  "private": false,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:debug": "eslint . --debug",
+    "lint:fix": "eslint . --fix",
+    "scraper:dev": "npm run dev -w packages/notion-graph-scraper",
+    "scraper:compile": "npm run compile -w packages/notion-graph-scraper",
+    "scraper:package": "npm run package -w packages/notion-graph-scraper"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "5.9.1",
+    "@typescript-eslint/parser": "5.9.1",
+    "eslint": "8.6.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-react": "7.28.0",
+    "prettier": "2.5.1"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@graphcentral/notion-graph-scraper",
+  "version": "0.0.1",
+  "description": "scrapes pages from Notion given a root page",
+  "main": "dist/lib.js",
+  "types": "dist/lib.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "dev": "tsup index.ts --onSuccess \"node --loader=ts-node/esm dist/index.mjs\"",
+    "compile": "tsup index.ts",
+    "run-compiled": "node --loader=ts-node/esm dist/index.mjs",
+    "package": "tsup ./lib/lib.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@notionhq/client": "^1.0.4",
+    "await-to-js": "^3.0.0",
+    "dotenv": "^16.0.1",
+    "notion-client": "^6.12.9",
+    "serialize-error": "^11.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "esbuild-plugin-babel": "^0.2.3",
+    "tsup": "^6.1.2",
+    "typescript": "^4.7.3"
+  }
+}
