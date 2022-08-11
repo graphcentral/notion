@@ -10,5 +10,5 @@ export default defineConfig({
   dts: true,
   target: `node16`,
   platform: `node`,
-  format: [`cjs`],
+  format: [`esm`],
 })
