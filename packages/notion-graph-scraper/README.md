@@ -1,6 +1,6 @@
 # notion
 
-![logo.png](./docs/logo.png)
+![logo.png](./logo.png)
 
 ```bash
 npm i --save @graphcentral/notion-graph-scraper
@@ -16,7 +16,7 @@ First, get a public Notion page (if you just want to test it out), preferably wi
 
 Then, get the id of the page like below:
 
-![doc0.png](./docs/doc0.png)
+![doc0.png](./doc0.png)
 
 Then, input the id of the page as a parameter to `notionGraph.buildGraphFromRootNode`
 
@@ -61,4 +61,4 @@ The graph will be an object of this type:
 
 Then, you can directly use this as an input to [@graphcentral/graph](https://github.com/graphcentral/graph) to visualize it on the web as a force layout graph, like below:
 
-![doc1.png](./docs/doc1.png)
+![doc1.png](./doc1.png)
