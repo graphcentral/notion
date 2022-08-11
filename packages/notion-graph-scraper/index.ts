@@ -1,12 +1,12 @@
-import { NotionGraph } from "./dist/lib"
+import { NotionGraph } from "./lib/lib"
 import fs from "fs"
 /**
  * example of how to use `@graphcentral/notion-graph-scraper`
  */
 ;(async () => {
   const notionGraph = new NotionGraph({
-    maxDiscoverableNodes: 2000,
-    maxDiscoverableNodesInOtherSpaces: 2000,
+    maxDiscoverableNodes: 300,
+    maxDiscoverableNodesInOtherSpaces: 300,
     verbose: true,
   })
   const graph = await notionGraph.buildGraphFromRootNode(

@@ -24,6 +24,7 @@ export class RequestQueue<Res, Err> {
   private intervalId: NodeJS.Timer | null = null
   private hasNoMoreRequestEnqueued = false
   private externalSuccessfulRequestCount = 0
+  private totalSuccessfulRequestCount = 0
   private logger: ReturnType<typeof createLogger>
   constructor({
     maxConcurrentRequest,
@@ -70,13 +71,12 @@ export class RequestQueue<Res, Err> {
   private checkAndSendRequest() {
     let timeoutIds: NodeJS.Timeout[] = []
     let totalRequestCount = 0
-    let totalSuccessfulRequestCount = 0
     const run = () => {
       // wait until external requests finish
       if (
         this.externalSuccessfulRequestCount !== 0 &&
-        totalSuccessfulRequestCount !== 0 &&
-        this.externalSuccessfulRequestCount < totalSuccessfulRequestCount
+        this.totalSuccessfulRequestCount !== 0 &&
+        this.externalSuccessfulRequestCount < this.totalSuccessfulRequestCount
       ) {
         return
       }
@@ -86,8 +86,11 @@ export class RequestQueue<Res, Err> {
       this.logger?.(`# total requests sent: ${totalRequestCount}`)
       this.logger?.(`# total successful requests: ${this.externalSuccessfulRequestCount}`)
       if (
-        this.externalSuccessfulRequestCount >= this.maxRequestCount &&
-        totalSuccessfulRequestCount >= this.maxRequestCount
+        // only care out external, since 
+        // `this.totalSuccessfulRequestCount` is the items in the current queue.
+        // it may be the case that the external requests have already achieved `maxRequestCount` items,
+        // which means there is no point of continuing already 
+        this.externalSuccessfulRequestCount >= this.maxRequestCount 
       ) {
         this.terminate()
       }
@@ -96,7 +99,7 @@ export class RequestQueue<Res, Err> {
         this.currentRequestCount < this.maxConcurrentRequest
       ) {
         while (this.currentRequestCount < this.maxConcurrentRequest) {
-          if (totalSuccessfulRequestCount >= this.maxRequestCount) {
+          if (this.externalSuccessfulRequestCount >= this.maxRequestCount) {
             this.queue = []
             this.currentRequestCount = 0
             this.hasNoMoreRequestEnqueued = true
@@ -114,7 +117,7 @@ export class RequestQueue<Res, Err> {
               if (res) this.responses.push(res)
             })
             .finally(() => {
-              ++totalSuccessfulRequestCount
+              ++this.totalSuccessfulRequestCount
               --this.currentRequestCount
               // if it is clear that no more requests will be enqueued,
               // check if the function can end right away
