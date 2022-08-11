@@ -1,6 +1,6 @@
 {
   "name": "@graphcentral/notion-graph-scraper",
-  "version": "0.0.1",
+  "version": "0.1.0-rc.1",
   "description": "scrapes pages from Notion given a root page",
   "main": "dist/lib.js",
   "types": "dist/lib.d.ts",
