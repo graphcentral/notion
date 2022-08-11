@@ -1,17 +1,18 @@
 {
-  "name": "@graphcentral/server",
+  "name": "@graphcentral/notion-demo-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "index.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@netlify/functions": "^1.0.0",
-    "@notionhq/client": "^1.0.4",
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.1",
+    "@graphcentral/notion-graph-scraper": "*"
   }
 }

@@ -1,8 +1,8 @@
 {
   "name": "@graphcentral/notion-graph-scraper",
-  "version": "0.1.0-rc.4",
+  "version": "0.1.0-rc.5",
   "description": "scrapes pages from Notion given a root page",
-  "main": "dist/lib.js",
+  "main": "dist/lib.mjs",
   "types": "dist/lib.d.ts",
   "files": ["dist"],
   "bugs": {
@@ -16,7 +16,7 @@
     "dev": "tsup index.ts --onSuccess \"node --loader=ts-node/esm dist/index.mjs\"",
     "compile": "tsup index.ts",
     "run-compiled": "node --loader=ts-node/esm dist/index.mjs",
-    "package": "tsup ./lib/lib.ts"
+    "package": "rm -rf dist && tsup ./lib/lib.ts"
   },
   "keywords": [],
   "author": "",

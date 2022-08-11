@@ -6,9 +6,8 @@
 npm i --save @graphcentral/notion-graph-scraper
 ```
 
-# `@graphcentral/notion-graph-scraper`
-
-Scrapes all Notion pages given a root page. For the graphing library itself, visit [graphcentral/graph](https://github.com/graphcentral/graph).
+You will be able to visualize the output from @graphcentral/notion-graph-scraper with [@graphcentral/graph](https://github.com/graphcentral/graph) like below:
+![doc1.png](./packages/notion-graph-scraper/doc1.png)
 
 ## Example
 
@@ -59,6 +58,20 @@ The graph will be an object of this type:
 }
 ```
 
-Then, you can directly use this as an input to [@graphcentral/graph](https://github.com/graphcentral/graph) to visualize it on the web as a force layout graph, like below:
+Then, you can directly use this as an input to [@graphcentral/graph](https://github.com/graphcentral/graph) to visualize it on the web as a force layout graph.
 
-![doc1.png](./packages/notion-graph-scraper/doc1.png)
+## Use ES6 module instead of Commonjs
+
+This project uses es6 module (.mjs). Therefore, the following setup is needed:
+
+In your `package.json`, specify "type" as "module"
+```json
+{
+  ...
+  "type": "module",
+  ...
+}
+```
+
+Then, using the latest version of node (this project uses whatever is specified in `.nvmrc` which is as of now `v16.15.1`), just run `node index.js` where `index.js` contains the previous example code.
+
