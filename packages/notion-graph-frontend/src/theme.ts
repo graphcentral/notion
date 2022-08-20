@@ -11,6 +11,9 @@ export const theme = {
     interactivePrimary: `#269AD3`,
     interactiveSecondary: `#138AC1`,
     interactiveText: `#FFFFFF`,
+    warningText: `#E33F45`,
+    warningPrimary: `#281D1C`,
+    warningSeconary: `#5A2824`,
   },
   border: {
     smallRadius: `0.2rem`,

@@ -1,29 +1,44 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { enhance } from "src/utilities/essentials";
-import { css } from "@emotion/react";
 import { useTypedTheme } from "src/theme";
 /** @jsx jsx */
 import { jsx } from "@emotion/react";
 import { CONSTANTS } from "src/constants";
-import Guide0Image from "src/assets/guide0.png";
-import Guide1Image from "src/assets/guide1.png";
-import Guide2Image from "src/assets/guide2.png";
-import Guide3Image from "src/assets/guide3.png";
-import Guide4Image from "src/assets/guide4.png";
+import { HowToAndTroubleShooting } from "src/pages/Main/localFragments";
+import { isValidNotionURL } from "src/utilities/notion";
+import debounce from "lodash.debounce";
 
 export const MainPage = enhance(() => {
   const theme = useTypedTheme();
   const [notionPublicPageLink, setNotionPublicPageLink] = useState(
     CONSTANTS.NOTION_HELP_PAGE
   );
+  const [isNotionPublicPageLinkValid, setNotionPagePublicLinkValid] = useState(
+    () => isValidNotionURL(CONSTANTS.NOTION_HELP_PAGE)
+  );
   const onNotionPublicPageLinkChange: NonNullable<
     React.DetailedHTMLProps<
       React.InputHTMLAttributes<HTMLInputElement>,
       HTMLInputElement
     >[`onChange`]
-  > = useCallback((event) => {
-    setNotionPublicPageLink(event.target.value);
-  }, []);
+  > = useCallback(
+    (event) => {
+      console.log(
+        event,
+        event.target.value,
+        isValidNotionURL(event.target.value)
+      );
+      setNotionPagePublicLinkValid(() => isValidNotionURL(event.target.value));
+      setNotionPublicPageLink(event.target.value);
+    },
+    [setNotionPagePublicLinkValid]
+  );
   const troubleShootingSectionRef = useRef<HTMLElement | null>(null);
   const onClickProblems = useCallback(() => {
     if (!troubleShootingSectionRef.current) return;
@@ -33,6 +48,7 @@ export const MainPage = enhance(() => {
     });
   }, []);
 
+  console.log(`compoennt: ${isNotionPublicPageLinkValid}`);
   return (
     <main
       css={{
@@ -71,14 +87,20 @@ export const MainPage = enhance(() => {
         <input
           css={{
             width: `80%`,
-            backgroundColor: theme.colors.darkPrimary,
+            border: isNotionPublicPageLinkValid
+              ? `thin solid ${theme.colors.whiteThird}`
+              : `thin solid ${theme.colors.warningSeconary}`,
+            backgroundColor: isNotionPublicPageLinkValid
+              ? theme.colors.darkPrimary
+              : theme.colors.warningPrimary,
             color: theme.colors.whitePrimary,
             padding: `1rem`,
             fontSize: `1rem`,
-            border: `thin solid ${theme.colors.whiteThird}`,
             borderRadius: theme.border.smallRadius,
             "&:hover": {
-              background: theme.colors.whiteFourth,
+              background: isNotionPublicPageLinkValid
+                ? theme.colors.whiteFourth
+                : theme.colors.warningPrimary,
             },
           }}
           autoFocus
@@ -130,118 +152,7 @@ export const MainPage = enhance(() => {
           minHeight: `47%`,
         }}
       >
-        <h2
-          css={{
-            color: theme.colors.whitePrimary,
-            textAlign: `center`,
-          }}
-        >
-          How to & Troubleshooting
-        </h2>
-        <article
-          css={{
-            padding: `1rem`,
-            display: `flex`,
-            flexDirection: `column`,
-            alignItems: `center`,
-          }}
-        >
-          <h3
-            css={{
-              color: theme.colors.whitePrimary,
-              width: `100%`,
-            }}
-          >
-            1. Locate your Notion page
-          </h3>
-          <p
-            css={{
-              width: `100%`,
-              padding: `0.5rem 0`,
-            }}
-          >
-            Preferably choose the page that has many children, because you want
-            to see a knowledge graph of some extent.
-          </p>
-          <img src={Guide0Image} alt="Locate your Notion page" width="70%" />
-        </article>
-        <article
-          css={{
-            padding: `1rem`,
-            display: `flex`,
-            flexDirection: `column`,
-            alignItems: `center`,
-          }}
-        >
-          <h3
-            css={{
-              color: theme.colors.whitePrimary,
-              width: `100%`,
-            }}
-          >
-            2. Make your page public
-          </h3>
-          <p
-            css={{
-              width: `100%`,
-              padding: `0.5rem 0`,
-            }}
-          >
-            Click on 'Share' at the top right corner, and turn on the toggle for
-            'Share to web'.
-          </p>
-          <img
-            css={{
-              padding: `1rem 0`,
-            }}
-            src={Guide1Image}
-            alt="Locate your Notion page"
-            width="70%"
-          />
-          <img
-            css={{
-              padding: `1rem 0`,
-            }}
-            src={Guide2Image}
-            alt="Locate your Notion page"
-            width="70%"
-          />
-          <img
-            css={{
-              padding: `1rem 0`,
-            }}
-            src={Guide3Image}
-            alt="Locate your Notion page"
-            width="70%"
-          />
-        </article>
-        <article
-          css={{
-            padding: `1rem`,
-            display: `flex`,
-            flexDirection: `column`,
-            alignItems: `center`,
-          }}
-        >
-          <h3
-            css={{
-              color: theme.colors.whitePrimary,
-              width: `100%`,
-            }}
-          >
-            3. Bring the link from Notion to this website
-          </h3>
-          <p
-            css={{
-              width: `100%`,
-              padding: `0.5rem 0`,
-            }}
-          >
-            Click on 'Copy web link', and paste the link into the input above on
-            this website
-          </p>
-          <img src={Guide4Image} alt="Locate your Notion page" width="70%" />
-        </article>
+        <HowToAndTroubleShooting />
       </section>
     </main>
   );
