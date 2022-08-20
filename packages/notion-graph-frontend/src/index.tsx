@@ -1,12 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom"
-import { ExampleImpure } from "./components/Example"
-import { ThemeProvider } from '@emotion/react'
-import { theme } from 'src/theme';
+import { App } from 'src/app';
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <ExampleImpure color="#345345" />,
-  </ThemeProvider>,
+  <App />,
   document.getElementById(`root`)
 )

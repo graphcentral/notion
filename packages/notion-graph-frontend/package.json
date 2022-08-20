@@ -8,7 +8,7 @@
   "private": false,
   "scripts": {
     "test": "jest --config ./jest/jest.config.ts",
-    "dev": "webpack serve --config ./webpack/webpack.config.dev.ts --mode development",
+    "dev": "../../node_modules/.bin/webpack-dev-server --config ./webpack/webpack.config.dev.ts --mode development",
     "prod": "webpack --config ./webpack/webpack.config.prod.ts --mode production",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
@@ -48,14 +48,14 @@
     "typescript": "4.5.4",
     "wait-for-expect": "3.0.2",
     "webpack": "5.65.0",
-    "webpack-cli": "^4.10.0",
+    "webpack-cli": "4.10.0",
     "webpack-dev-server": "4.7.2"
   },
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "axios": "^0.24.0",
     "lodash.flow": "^3.5.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
