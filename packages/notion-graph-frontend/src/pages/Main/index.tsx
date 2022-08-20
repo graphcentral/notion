@@ -13,6 +13,7 @@ import { CONSTANTS } from "src/constants";
 import { HowToAndTroubleShooting } from "src/pages/Main/localFragments";
 import { isValidNotionURL } from "src/utilities/notion";
 import debounce from "lodash.debounce";
+import { unstable_batchedUpdates } from "react-dom";
 
 export const MainPage = enhance(() => {
   const theme = useTypedTheme();
@@ -20,25 +21,26 @@ export const MainPage = enhance(() => {
     CONSTANTS.NOTION_HELP_PAGE
   );
   const [isNotionPublicPageLinkValid, setNotionPagePublicLinkValid] = useState(
-    () => isValidNotionURL(CONSTANTS.NOTION_HELP_PAGE)
+    isValidNotionURL(CONSTANTS.NOTION_HELP_PAGE)
   );
   const onNotionPublicPageLinkChange: NonNullable<
     React.DetailedHTMLProps<
       React.InputHTMLAttributes<HTMLInputElement>,
       HTMLInputElement
     >[`onChange`]
-  > = useCallback(
-    (event) => {
-      console.log(
-        event,
-        event.target.value,
-        isValidNotionURL(event.target.value)
-      );
-      setNotionPagePublicLinkValid(() => isValidNotionURL(event.target.value));
-      setNotionPublicPageLink(event.target.value);
-    },
-    [setNotionPagePublicLinkValid]
-  );
+  > = useCallback((event) => {
+    console.log(
+      event,
+      event.target.value,
+      isValidNotionURL(event.target.value)
+    );
+    setNotionPublicPageLink(event.target.value);
+  }, []);
+
+  useEffect(() => {
+    setNotionPagePublicLinkValid(isValidNotionURL(notionPublicPageLink));
+  }, [notionPublicPageLink]);
+
   const troubleShootingSectionRef = useRef<HTMLElement | null>(null);
   const onClickProblems = useCallback(() => {
     if (!troubleShootingSectionRef.current) return;
