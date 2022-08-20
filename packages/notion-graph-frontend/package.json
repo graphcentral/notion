@@ -29,7 +29,7 @@
     "@types/jest": "27.4.0",
     "@types/lodash.flow": "3.5.6",
     "@types/react": "17.0.38",
-    "@types/react-dom": "17.0.11",
+    "@types/react-dom": "^17.0.11",
     "@types/webpack-dev-server": "4.7.1",
     "@wojtekmaj/enzyme-adapter-react-17": "0.6.6",
     "babel-loader": "8.2.3",
@@ -55,7 +55,9 @@
     "@emotion/react": "^11.10.0",
     "axios": "^0.24.0",
     "lodash.flow": "^3.5.0",
+    "normalize.css": "^8.0.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zustand": "^4.1.0"
   }
 }

@@ -31,6 +31,7 @@
         "./src/*"
       ]
     },
+    "types": ["@emotion/core"],
     "allowSyntheticDefaultImports": true,       
     "esModuleInterop": true,                    
     "skipLibCheck": true,                       
