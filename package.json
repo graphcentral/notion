@@ -17,7 +17,10 @@
     "lint:fix": "eslint . --fix",
     "scraper:dev": "npm run dev -w packages/notion-graph-scraper",
     "scraper:compile": "npm run compile -w packages/notion-graph-scraper",
-    "scraper:package": "npm run package -w packages/notion-graph-scraper"
+    "scraper:package": "npm run package -w packages/notion-graph-scraper",
+    "fe:dev": "npm run dev -w packages/notion-graph-frontend",
+    "fe:test": "npm run test -w packages/notion-graph-frontend",
+    "be:dev": "npm run dev -w packages/notion-graph-backend"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.9.1",
@@ -27,9 +30,5 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "7.28.0",
     "prettier": "2.5.1"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   }
 }

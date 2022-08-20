@@ -1,11 +1,11 @@
-import path from "path"
-import webpack from "webpack"
+import path from "path";
+import webpack from "webpack";
 // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/27570#issuecomment-437115227
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import * as webpackDevServer from "webpack-dev-server"
-import { commonConfig } from "./webpack.config.common"
+import * as webpackDevServer from "webpack-dev-server";
+import { commonConfig } from "./webpack.config.common";
 
 const config: webpack.Configuration = {
   mode: `development`,
@@ -17,6 +17,6 @@ const config: webpack.Configuration = {
     open: true,
   },
   ...commonConfig,
-}
+};
 
-export default config
+export default config;

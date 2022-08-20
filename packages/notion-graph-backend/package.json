@@ -5,14 +5,18 @@
   "type": "module",
   "main": "index.mjs",
   "scripts": {
-    "start": "node index.mjs"
+    "dev": "node --loader=ts-node/esm index.ts"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
+    "@graphcentral/notion-graph-scraper": "*",
     "@netlify/functions": "^1.0.0",
     "dotenv": "^16.0.1",
-    "@graphcentral/notion-graph-scraper": "*"
+    "pusher": "^5.1.1-beta"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
   }
 }

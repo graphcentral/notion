@@ -18,9 +18,9 @@
     "run-compiled": "node --loader=ts-node/esm dist/index.mjs",
     "package": "rm -rf dist && tsup ./lib/lib.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["notion", "graph", "notion-graph", "scraper", "obsidian", "knowledge-graph"],
+  "author": "9oelM",
+  "license": "MIT",
   "dependencies": {
     "@notionhq/client": "^1.0.4",
     "await-to-js": "^3.0.0",

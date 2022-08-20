@@ -1,8 +1,9 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import { ExampleImpure } from "./components/Example"
+import React from "react";
+// @ts-ignore
+import { createRoot } from "react-dom/client";
+import { App } from "src/app";
+import "normalize.css";
 
-ReactDOM.render(
-  <ExampleImpure color="#345345" />,
-  document.getElementById(`root`)
-)
+const container = document.getElementById(`root`);
+const root = createRoot(container!);
+root.render(<App />);

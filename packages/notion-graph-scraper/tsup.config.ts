@@ -1,8 +1,8 @@
-import { defineConfig } from "tsup"
-import path from "path"
-import * as dotenv from "dotenv"
+import { defineConfig } from "tsup";
+import path from "path";
+import * as dotenv from "dotenv";
 
-dotenv.config({ path: path.resolve(__dirname, `..`, `..`, `.env`) })
+dotenv.config({ path: path.resolve(__dirname, `..`, `..`, `.env`) });
 
 export default defineConfig({
   outDir: path.resolve(`.`, `dist`),
@@ -11,4 +11,4 @@ export default defineConfig({
   target: `node16`,
   platform: `node`,
   format: [`esm`],
-})
+});
