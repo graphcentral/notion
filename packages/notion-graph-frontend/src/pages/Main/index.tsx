@@ -6,6 +6,10 @@ import { useTypedTheme } from "src/theme";
 import { jsx } from "@emotion/react";
 import { CONSTANTS } from "src/constants";
 import Guide0Image from "src/assets/guide0.png";
+import Guide1Image from "src/assets/guide1.png";
+import Guide2Image from "src/assets/guide2.png";
+import Guide3Image from "src/assets/guide3.png";
+import Guide4Image from "src/assets/guide4.png";
 
 export const MainPage = enhance(() => {
   const theme = useTypedTheme();
@@ -34,7 +38,7 @@ export const MainPage = enhance(() => {
       css={{
         backgroundColor: theme.colors.darkSecondary,
         width: `100%`,
-        height: `200%`,
+        height: `max-content`,
         display: `flex`,
         justifyContent: `center`,
         alignItems: `center`,
@@ -44,9 +48,9 @@ export const MainPage = enhance(() => {
       <section
         css={{
           width: `100%`,
-          minHeight: `50%`,
-          height: `50%`,
-          maxHeight: `50%`,
+          minHeight: `100vh`,
+          height: `100vh`,
+          maxHeight: `100vh`,
           display: `flex`,
           justifyContent: `center`,
           alignItems: `center`,
@@ -160,6 +164,83 @@ export const MainPage = enhance(() => {
             to see a knowledge graph of some extent.
           </p>
           <img src={Guide0Image} alt="Locate your Notion page" width="70%" />
+        </article>
+        <article
+          css={{
+            padding: `1rem`,
+            display: `flex`,
+            flexDirection: `column`,
+            alignItems: `center`,
+          }}
+        >
+          <h3
+            css={{
+              color: theme.colors.whitePrimary,
+              width: `100%`,
+            }}
+          >
+            2. Make your page public
+          </h3>
+          <p
+            css={{
+              width: `100%`,
+              padding: `0.5rem 0`,
+            }}
+          >
+            Click on 'Share' at the top right corner, and turn on the toggle for
+            'Share to web'.
+          </p>
+          <img
+            css={{
+              padding: `1rem 0`,
+            }}
+            src={Guide1Image}
+            alt="Locate your Notion page"
+            width="70%"
+          />
+          <img
+            css={{
+              padding: `1rem 0`,
+            }}
+            src={Guide2Image}
+            alt="Locate your Notion page"
+            width="70%"
+          />
+          <img
+            css={{
+              padding: `1rem 0`,
+            }}
+            src={Guide3Image}
+            alt="Locate your Notion page"
+            width="70%"
+          />
+        </article>
+        <article
+          css={{
+            padding: `1rem`,
+            display: `flex`,
+            flexDirection: `column`,
+            alignItems: `center`,
+          }}
+        >
+          <h3
+            css={{
+              color: theme.colors.whitePrimary,
+              width: `100%`,
+            }}
+          >
+            3. Bring the link from Notion to this website
+          </h3>
+          <p
+            css={{
+              width: `100%`,
+              padding: `0.5rem 0`,
+            }}
+          >
+            Click on 'Copy web link', and paste the link into the input above on
+            this website
+          </p>
+          <img src={Guide4Image} alt="Locate your Notion page" width="70%" />
         </article>
       </section>
     </main>
