@@ -1,5 +1,5 @@
-import { NotionContentNode } from "../types/notion-content-node"
-import { DeepReadonly } from "../types/util-types"
+import { NotionContentNode } from "../types/notion-content-node";
+import { DeepReadonly } from "../types/util-types";
 
 /**
  * represents the graph of nodes.
@@ -39,15 +39,15 @@ import { DeepReadonly } from "../types/util-types"
 export type RawUndirectedNodesGraph = Record<
   NotionContentNode[`id`],
   Record<NotionContentNode[`id`], boolean> | undefined
->
+>;
 
 /**
  * d3.js uses `source: ... target: ...` format to abstract
  * the concept of an edge.
  */
 interface D3JsEdge {
-  source: NotionContentNode[`id`]
-  target: NotionContentNode[`id`]
+  source: NotionContentNode[`id`];
+  target: NotionContentNode[`id`];
 }
 
 /**
@@ -56,8 +56,8 @@ interface D3JsEdge {
 export class UndirectedNodesGraph<
   Node extends { id: NotionContentNode[`id`] }
 > {
-  private graph: RawUndirectedNodesGraph = {}
-  private nodesLength = 0
+  private graph: RawUndirectedNodesGraph = {};
+  private nodesLength = 0;
 
   /**
    * Adds an edge between two nodes, but avoids making duplicates
@@ -68,19 +68,19 @@ export class UndirectedNodesGraph<
    */
   public addEdgeByIds(node0id: string, node1id: string) {
     // node0 may already have node1, but we just update it anyway
-    let node0Edges = this.graph[node0id]
-    const node1Edges = this.graph[node1id]
+    let node0Edges = this.graph[node0id];
+    const node1Edges = this.graph[node1id];
     // check if edge already exists in node1Edges
     if (node1Edges && node1Edges[node0id]) {
       // if edge already exists, return
-      return
+      return;
     }
     // otherwise, add a new edge to node0
-    if (!node0Edges) node0Edges = {}
-    node0Edges[node1id] = true
+    if (!node0Edges) node0Edges = {};
+    node0Edges[node1id] = true;
 
-    this.graph[node0id] = node0Edges
-    this.nodesLength += 1
+    this.graph[node0id] = node0Edges;
+    this.nodesLength += 1;
   }
   /**
    * Adds an edge between two nodes, but avoids making duplicates
@@ -90,11 +90,11 @@ export class UndirectedNodesGraph<
    * `source` will be the child node
    */
   public addEdge(node0: Node, node1: Node): void {
-    this.addEdgeByIds(node0.id, node1.id)
+    this.addEdgeByIds(node0.id, node1.id);
   }
 
   public getGraph(): DeepReadonly<RawUndirectedNodesGraph> {
-    return this.graph
+    return this.graph;
   }
 
   /**
@@ -103,22 +103,22 @@ export class UndirectedNodesGraph<
    *
    */
   public getD3JsEdgeFormat(): DeepReadonly<D3JsEdge[]> {
-    const d3JsEdges: D3JsEdge[] = []
+    const d3JsEdges: D3JsEdge[] = [];
     Object.keys(this.graph).map((nodeId) => {
-      const edges = this.graph[nodeId]
-      if (!edges) return
+      const edges = this.graph[nodeId];
+      if (!edges) return;
       for (const edge of Object.keys(edges)) {
         d3JsEdges.push({
           source: nodeId,
           target: edge,
-        })
+        });
       }
-    })
+    });
 
-    return d3JsEdges
+    return d3JsEdges;
   }
 
   public get length(): number {
-    return this.length
+    return this.length;
   }
 }

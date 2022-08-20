@@ -1,5 +1,5 @@
-import React from "react"
-import { FC } from "react"
+import React from "react";
+import { FC } from "react";
 
 export const ExampleFallback: FC = () => (
   <div>
@@ -11,4 +11,4 @@ export const ExampleFallback: FC = () => (
       Oops. Something went wrong. Please try again.
     </p>
   </div>
-)
+);

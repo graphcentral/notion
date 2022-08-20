@@ -1,28 +1,28 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Client } from "@notionhq/client"
+import { Client } from "@notionhq/client";
 import {
   ListBlockChildrenResponse,
   QueryDatabaseResponse,
-} from "@notionhq/client/build/src/api-endpoints"
-import to from "await-to-js"
-import { RequestQueue } from "../../lib/request-queue"
-import { UndirectedNodesGraph } from "../../lib/undirected-nodes-graph"
-import { NotionContentNode } from "../../types/notion-content-node"
+} from "@notionhq/client/build/src/api-endpoints";
+import to from "await-to-js";
+import { RequestQueue } from "../../lib/request-queue";
+import { UndirectedNodesGraph } from "../../lib/undirected-nodes-graph";
+import { NotionContentNode } from "../../types/notion-content-node";
 import {
   separateIdWithDashSafe,
   identifyObjectTitle,
-} from "../../lib/isomorphic-notion-util"
+} from "../../lib/isomorphic-notion-util";
 
 function blockTypeToNotionContentNodeType(
   blockType: `child_page` | `child_database`
 ) {
   switch (blockType) {
     case `child_database`:
-      return `database`
+      return `database`;
     case `child_page`:
-      return `page`
+      return `page`;
     default:
-      return `error`
+      return `error`;
   }
 }
 
@@ -40,10 +40,10 @@ async function retrieveRootNode(
     notion.blocks.retrieve({
       block_id: separateIdWithDashSafe(rootBlockId),
     })
-  )
+  );
 
   if (err || !blockInfo) {
-    return null
+    return null;
   }
 
   return {
@@ -53,7 +53,7 @@ async function retrieveRootNode(
     ),
     id: separateIdWithDashSafe(rootBlockId),
     title: identifyObjectTitle(blockInfo),
-  }
+  };
 }
 
 /**
@@ -66,15 +66,15 @@ async function retrieveDatabaseOrPageChildren(
   notion: Client,
   parentNode: NotionContentNode
 ): Promise<{
-  databaseChildren: QueryDatabaseResponse | null
-  pageChildren: ListBlockChildrenResponse | null
+  databaseChildren: QueryDatabaseResponse | null;
+  pageChildren: ListBlockChildrenResponse | null;
 } | null> {
   let pageChildren: Awaited<
     ReturnType<typeof notion[`blocks`][`children`][`list`]>
-  > | null = null
+  > | null = null;
   let databaseChildren: Awaited<
     ReturnType<typeof notion[`databases`][`query`]>
-  > | null = null
+  > | null = null;
   switch (parentNode.type) {
     case `database`: {
       const [err, databaseChildrenQueryResult] = await to(
@@ -82,12 +82,12 @@ async function retrieveDatabaseOrPageChildren(
           database_id: separateIdWithDashSafe(parentNode.id),
           page_size: 50,
         })
-      )
+      );
       if (databaseChildrenQueryResult) {
-        databaseChildren = databaseChildrenQueryResult
+        databaseChildren = databaseChildrenQueryResult;
       }
       // if (err) console.log(err)
-      break
+      break;
     }
     case `page`: {
       const [err, pageChildrenListResult] = await to(
@@ -95,9 +95,9 @@ async function retrieveDatabaseOrPageChildren(
           block_id: separateIdWithDashSafe(parentNode.id),
           page_size: 50,
         })
-      )
+      );
       if (pageChildrenListResult) {
-        pageChildren = pageChildrenListResult
+        pageChildren = pageChildrenListResult;
       }
       // if (err) console.log(err)
     }
@@ -105,13 +105,13 @@ async function retrieveDatabaseOrPageChildren(
 
   // something went wrong
   if (!databaseChildren && !pageChildren) {
-    return null
+    return null;
   }
 
   return {
     databaseChildren,
     pageChildren,
-  }
+  };
 }
 
 function createNotionContentNodeFromPageChild(
@@ -125,7 +125,7 @@ function createNotionContentNodeFromPageChild(
       // @ts-ignore: sdk doesn't support good typing
       pageChild.type
     ),
-  }
+  };
 }
 
 function createNotionContentNodeFromDatabaseChild(
@@ -135,7 +135,7 @@ function createNotionContentNodeFromDatabaseChild(
     title: identifyObjectTitle(databaseChild),
     id: databaseChild.id,
     type: databaseChild.object,
-  }
+  };
 }
 
 /**
@@ -151,62 +151,62 @@ export async function buildGraphFromRootNode(
   notion: Client,
   rootBlockId: string
 ): Promise<{
-  nodes: NotionContentNode[]
+  nodes: NotionContentNode[];
   links: ReturnType<
     UndirectedNodesGraph<NotionContentNode>[`getD3JsEdgeFormat`]
-  >
+  >;
 }> {
-  const rootNode = await retrieveRootNode(notion, rootBlockId)
+  const rootNode = await retrieveRootNode(notion, rootBlockId);
 
   if (!rootNode) {
-    throw new Error(`Error while retrieving rootNode`)
+    throw new Error(`Error while retrieving rootNode`);
   }
-  const nodes: NotionContentNode[] = [rootNode]
-  const nodesGraph = new UndirectedNodesGraph<NotionContentNode>()
-  const requestQueue = new RequestQueue({ maxConcurrentRequest: 50 })
+  const nodes: NotionContentNode[] = [rootNode];
+  const nodesGraph = new UndirectedNodesGraph<NotionContentNode>();
+  const requestQueue = new RequestQueue({ maxConcurrentRequest: 50 });
 
   async function retrieveNodesRecursively(parentNode: NotionContentNode) {
     const queryChild = (child: NotionContentNode) => {
-      requestQueue.enqueue(() => retrieveNodesRecursively(child))
-    }
+      requestQueue.enqueue(() => retrieveNodesRecursively(child));
+    };
     const processNewBlock = (newBlock: NotionContentNode) => {
-      nodesGraph.addEdge(parentNode, newBlock)
-      nodes.push(newBlock)
-      queryChild(newBlock)
-    }
+      nodesGraph.addEdge(parentNode, newBlock);
+      nodes.push(newBlock);
+      queryChild(newBlock);
+    };
 
     const databaseOrPageChildren = await retrieveDatabaseOrPageChildren(
       notion,
       parentNode
-    )
+    );
 
     if (!databaseOrPageChildren) {
-      return
+      return;
     }
 
-    const { pageChildren, databaseChildren } = databaseOrPageChildren
+    const { pageChildren, databaseChildren } = databaseOrPageChildren;
 
     if (pageChildren) {
       for (const child of pageChildren.results) {
         try {
           // @ts-ignore: sdk doesn't support good typing
           if (child.type === `child_database` || child.type === `child_page`) {
-            const newBlock = createNotionContentNodeFromPageChild(child)
-            processNewBlock(newBlock)
+            const newBlock = createNotionContentNodeFromPageChild(child);
+            processNewBlock(newBlock);
           }
         } catch (e) {
           // console.log(e)
-          console.log(`e`)
+          console.log(`e`);
         }
       }
     } else if (databaseChildren) {
       for (const child of databaseChildren.results) {
         try {
-          const newBlock = createNotionContentNodeFromDatabaseChild(child)
-          processNewBlock(newBlock)
+          const newBlock = createNotionContentNodeFromDatabaseChild(child);
+          processNewBlock(newBlock);
         } catch (e) {
           // console.log(e)
-          console.log(`e`)
+          console.log(`e`);
         }
       }
     }
@@ -216,17 +216,17 @@ export async function buildGraphFromRootNode(
     Promise.allSettled([
       retrieveNodesRecursively(rootNode),
       new Promise((resolve) => {
-        requestQueue.onComplete(resolve)
+        requestQueue.onComplete(resolve);
       }),
     ])
-  )
+  );
 
   if (err) {
-    throw err
+    throw err;
   }
 
   return {
     nodes,
     links: nodesGraph.getD3JsEdgeFormat(),
-  }
+  };
 }

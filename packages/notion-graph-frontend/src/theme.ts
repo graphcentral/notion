@@ -1,4 +1,4 @@
-import { useTheme } from '@emotion/react';
+import { useTheme } from "@emotion/react";
 
 export const theme = {
   colors: {
@@ -10,13 +10,13 @@ export const theme = {
     whiteFourth: `#1D1D1D`,
     interactivePrimary: `#269AD3`,
     interactiveSecondary: `#138AC1`,
-    interactiveText: `#FFFFFF`
+    interactiveText: `#FFFFFF`,
   },
   border: {
-    smallRadius: `0.2rem`
-  }
-} as const
+    smallRadius: `0.2rem`,
+  },
+} as const;
 
 export function useTypedTheme(): typeof theme {
-  return useTheme() as typeof theme
+  return useTheme() as typeof theme;
 }

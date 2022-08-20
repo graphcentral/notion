@@ -1,7 +1,7 @@
-import path from "path"
-import webpack from "webpack"
-import HtmlWebpackPlugin from "html-webpack-plugin"
-import tsconfigRaw from "../tsconfig.esbuild.json"
+import path from "path";
+import webpack from "webpack";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import tsconfigRaw from "../tsconfig.esbuild.json";
 
 export const commonConfig: webpack.Configuration = {
   entry: `./src/index.tsx`,
@@ -35,9 +35,9 @@ export const commonConfig: webpack.Configuration = {
         test: /\.tsx?$/,
         loader: `esbuild-loader`,
         options: {
-          loader: 'tsx',
-          target: 'es2015',
-          tsconfigRaw, 
+          loader: `tsx`,
+          target: `es2015`,
+          tsconfigRaw,
         },
       },
       {
@@ -46,14 +46,14 @@ export const commonConfig: webpack.Configuration = {
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
+        type: `asset/resource`,
       },
     ],
   },
   resolve: {
     extensions: [`.tsx`, `.ts`, `.js`],
     alias: {
-      src: path.resolve(__dirname, '..', 'src/') 
+      src: path.resolve(__dirname, `..`, `src/`),
     },
   },
   output: {
@@ -67,4 +67,4 @@ export const commonConfig: webpack.Configuration = {
       template: path.join(__dirname, `..`, `public`, `index.html`),
     }),
   ],
-}
+};

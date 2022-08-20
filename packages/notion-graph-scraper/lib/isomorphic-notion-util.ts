@@ -5,7 +5,7 @@ export function identifyObjectTitle<
     if (obj.object === `database`) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore: sdk bad typing
-      return obj.title?.[0].plain_text
+      return obj.title?.[0].plain_text;
     } else if (obj.object === `page`) {
       return (
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -14,17 +14,17 @@ export function identifyObjectTitle<
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore: sdk bad typing
         obj.properties?.title?.title?.[0].plain_text
-      )
+      );
     } else if (obj.object === `block`) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore: sdk bad typing
-      return obj.child_page?.title ?? obj.child_database.title
+      return obj.child_page?.title ?? obj.child_database.title;
     }
 
-    throw new Error(`should never get here`)
-  }
+    throw new Error(`should never get here`);
+  };
 
-  return nameUntitledIfEmpty(identify())
+  return nameUntitledIfEmpty(identify());
 }
 
 /**
@@ -34,17 +34,17 @@ export function identifyObjectTitle<
  */
 export function separateIdWithDashSafe(maybe_without_dash: string): string {
   if (isIdAlreadySeparateByDash(maybe_without_dash)) {
-    return maybe_without_dash
+    return maybe_without_dash;
   }
 
   if (maybe_without_dash.length != 32) {
-    throw new Error(`Incorrect length of id: ${maybe_without_dash.length}`)
+    throw new Error(`Incorrect length of id: ${maybe_without_dash.length}`);
   }
 
   if (!/^[a-zA-Z0-9]{32}$/.test(maybe_without_dash)) {
     throw new Error(
       `Incorrect format of id: ${maybe_without_dash}. It must be /^[a-zA-Z0-9]{32}$/`
-    )
+    );
   }
 
   return `${maybe_without_dash.substring(0, 8)}-${maybe_without_dash.substring(
@@ -53,24 +53,24 @@ export function separateIdWithDashSafe(maybe_without_dash: string): string {
   )}-${maybe_without_dash.substring(12, 16)}-${maybe_without_dash.substring(
     16,
     20
-  )}-${maybe_without_dash.substring(20, 32)}`
+  )}-${maybe_without_dash.substring(20, 32)}`;
 }
 
 export function isIdAlreadySeparateByDash(
   maybe_separate_with_dash: string
 ): boolean {
   if (maybe_separate_with_dash.length !== 36) {
-    return false
+    return false;
   }
   return /^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$/.test(
     maybe_separate_with_dash
-  )
+  );
 }
 
 export function nameUntitledIfEmpty(title: string): string {
   if (title === ``) {
-    return `Untitled`
+    return `Untitled`;
   }
 
-  return title
+  return title;
 }
