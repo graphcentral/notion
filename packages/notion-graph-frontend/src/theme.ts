@@ -8,6 +8,12 @@ export const theme = {
     whiteSecondary: `#898989`,
     whiteThird: `#2A2A2A`,
     whiteFourth: `#1D1D1D`,
+    interactivePrimary: `#269AD3`,
+    interactiveSecondary: `#138AC1`,
+    interactiveText: `#FFFFFF`
+  },
+  border: {
+    smallRadius: `0.2rem`
   }
 } as const
 

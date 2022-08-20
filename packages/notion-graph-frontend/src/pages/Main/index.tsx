@@ -5,6 +5,7 @@ import { useTypedTheme } from 'src/theme';
 /** @jsx jsx */
 import { jsx } from '@emotion/react'
 import { CONSTANTS } from 'src/constants';
+import Guide0Image from "src/assets/guide0.png"
 
 export const MainPage = enhance(() => {
   const theme = useTypedTheme()
@@ -23,7 +24,6 @@ export const MainPage = enhance(() => {
     },
     [],
   )
-  
 
   return <main
   css={{
@@ -54,6 +54,7 @@ export const MainPage = enhance(() => {
         fontSize: `2rem`,
         textAlign: `center`,
         marginTop: `auto`,
+        padding: `0 0.5rem`
       }}
       >
       Enter your Notion page's public link here! 👇🏼
@@ -66,7 +67,7 @@ export const MainPage = enhance(() => {
         padding: `1rem`,
         fontSize: `1rem`,
         border: `thin solid ${theme.colors.whiteThird}`,
-        marginBottom: `auto`,
+        borderRadius: theme.border.smallRadius,
         '&:hover': {
           background: theme.colors.whiteFourth,
         },
@@ -75,12 +76,29 @@ export const MainPage = enhance(() => {
       defaultValue={notionPublicPageLink}
       placeholder={CONSTANTS.NOTION_HELP_PAGE}
       onChange={onNotionPublicPageLinkChange}
-    />
+      />
+    <button
+      css={{
+        background: theme.colors.interactivePrimary,
+        color: theme.colors.interactiveText,
+        border: `none`,
+        borderRadius: theme.border.smallRadius,
+        padding: `1rem`,
+        marginTop: `1rem`,
+        marginBottom: `auto`,
+        cursor: `pointer`,
+        '&:hover': {
+          background: theme.colors.interactiveSecondary,
+        }
+      }}
+      onClick={onClickProblems}
+    >Create my knowledge graph</button>
     <button
       css={{
         background: theme.colors.darkPrimary,
         color: theme.colors.whitePrimary,
         border: `thin solid ${theme.colors.whiteThird}`,
+        borderRadius: theme.border.smallRadius,
         padding: `1rem`,
         marginBottom: `3rem`,
         cursor: `pointer`,
@@ -105,6 +123,23 @@ export const MainPage = enhance(() => {
         textAlign: `center`,
       }}
     >How to & Troubleshooting</h2>
+    <article
+      css={{
+        padding: `1rem`
+      }}
+    >
+    <h3
+      css={{
+        color: theme.colors.whitePrimary,
+      }}
+    >
+      1. Locate your Notion page
+    </h3>
+    <p>
+      Preferably choose the page that has many children, because you want to see a knowledge graph of some extent.
+    </p>
+    <img src={Guide0Image} alt="Locate your Notion page" />
+    </article>
     </section>
   </main>
 })()
