@@ -11,8 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@graphcentral/notion-graph-scraper": "*",
     "@netlify/functions": "^1.0.0",
     "dotenv": "^16.0.1",
-    "@graphcentral/notion-graph-scraper": "*"
+    "pusher-js": "^7.4.0"
   }
 }

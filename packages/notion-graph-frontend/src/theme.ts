@@ -15,6 +15,9 @@ export const theme = {
     warningPrimary: `#281D1C`,
     warningSeconary: `#5A2824`,
   },
+  lines: {
+    link: `#363636`,
+  },
   border: {
     smallRadius: `0.2rem`,
   },
