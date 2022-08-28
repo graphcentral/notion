@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "es5",                       
+    "module": "commonjs",                  
+    "lib": ["DOM", "ESNext"],              
+    "jsx": "react",                        
+    "sourceMap": true,                     
+    "downlevelIteration": true,            
+    
+    "strict": true,                      
+    "noImplicitAny": true,               
+    "strictNullChecks": true,             
+    "strictFunctionTypes": true,          
+    "strictBindCallApply": true,          
+    "strictPropertyInitialization": true, 
+    "noImplicitThis": true,               
+    "alwaysStrict": true,                 
+
+
+    "noUnusedLocals": false,                    
+    "noUnusedParameters": false,                
+    "noImplicitReturns": true,                  
+    "noFallthroughCasesInSwitch": true,         
+    "noUncheckedIndexedAccess": true,           
+    "noPropertyAccessFromIndexSignature": true,  
+
+    "moduleResolution": "node",                  
+    "baseUrl": "./src",                            
+    "paths": {
+      "src/*": [
+        "./src/*"
+      ]
+    },
+    "types": ["@emotion/core"],
+    "allowSyntheticDefaultImports": true,       
+    "esModuleInterop": true,                    
+    "skipLibCheck": true,                       
+    "forceConsistentCasingInFileNames": true    
+  }
+}

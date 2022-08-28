@@ -1,8 +1,14 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      pusher_app_id: string;
+      pusher_key: string;
+      pusher_secret: string;
+      pusher_cluster: string;
+      GITHUB_AUTH_TOKEN: string;
       NODE_ENV: `development` | `production`;
-      NOTION_TOKEN: string;
+      PORT?: string;
+      PWD: string;
     }
   }
 }

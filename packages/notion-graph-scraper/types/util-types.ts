@@ -5,10 +5,10 @@ export type DeepReadonly<T> = T extends (infer R)[]
   ? T
   : T extends object
   ? DeepReadonlyObject<T>
-  : T
+  : T;
 
-type DeepReadonlyArray<T> = ReadonlyArray<DeepReadonly<T>>
+type DeepReadonlyArray<T> = ReadonlyArray<DeepReadonly<T>>;
 
 type DeepReadonlyObject<T> = {
-  readonly [P in keyof T]: DeepReadonly<T[P]>
-}
+  readonly [P in keyof T]: DeepReadonly<T[P]>;
+};

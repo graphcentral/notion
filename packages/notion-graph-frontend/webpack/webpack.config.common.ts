@@ -1,6 +1,7 @@
-import path from "path"
-import webpack from "webpack"
-import HtmlWebpackPlugin from "html-webpack-plugin"
+import path from "path";
+import webpack from "webpack";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import tsconfigRaw from "../tsconfig.esbuild.json";
 
 export const commonConfig: webpack.Configuration = {
   entry: `./src/index.tsx`,
@@ -32,17 +33,28 @@ export const commonConfig: webpack.Configuration = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: `ts-loader`,
-        exclude: /node_modules/,
+        loader: `esbuild-loader`,
+        options: {
+          loader: `tsx`,
+          target: `es2015`,
+          tsconfigRaw,
+        },
       },
       {
         test: /\.css?$/,
         use: [`style-loader`, `css-loader`],
       },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: `asset/resource`,
+      },
     ],
   },
   resolve: {
     extensions: [`.tsx`, `.ts`, `.js`],
+    alias: {
+      src: path.resolve(__dirname, `..`, `src/`),
+    },
   },
   output: {
     filename: `[chunkhash].[name].js`,
@@ -55,4 +67,4 @@ export const commonConfig: webpack.Configuration = {
       template: path.join(__dirname, `..`, `public`, `index.html`),
     }),
   ],
-}
+};

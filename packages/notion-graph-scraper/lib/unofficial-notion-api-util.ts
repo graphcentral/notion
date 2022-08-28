@@ -1,9 +1,9 @@
-import { nameUntitledIfEmpty } from "./isomorphic-notion-util"
-import { Block, BlockMap } from "../types/block-map"
+import { nameUntitledIfEmpty } from "./isomorphic-notion-util";
+import { Block, BlockMap } from "../types/block-map";
 import {
   isNotionContentNodeType,
   NotionContentNodeUnofficialAPI,
-} from "../types/notion-content-node"
+} from "../types/notion-content-node";
 
 /**
  * Utils specific to unofficial notion api
@@ -16,33 +16,33 @@ export class UnofficialNotionAPIUtil {
    * @returns
    */
   public static getTitleFromPageBlock(page: BlockMap[keyof BlockMap]): string {
-    const { properties } = page.value
+    const { properties } = page.value;
 
     // if a page is untitled, properties does not exist at all
     if (!properties) {
-      return `Untitled`
+      return `Untitled`;
     }
 
-    const title = properties?.title?.[0]?.[0]
+    const title = properties?.title?.[0]?.[0];
 
     if (title === undefined || title === null) {
-      return `Untitled`
+      return `Untitled`;
     }
 
-    return nameUntitledIfEmpty(title)
+    return nameUntitledIfEmpty(title);
   }
 
   public static getTitleFromCollectionBlock(collectionBlock: Block): string {
     const name: string | undefined =
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      collectionBlock.value?.name?.[0]?.[0]
+      collectionBlock.value?.name?.[0]?.[0];
 
     if (name === undefined || name === null) {
-      return `Unknown database title`
+      return `Unknown database title`;
     }
 
-    return name
+    return name;
   }
   /**
    * `parent_table` is space if the block is at the top level of all pages (= the block is
@@ -54,7 +54,7 @@ export class UnofficialNotionAPIUtil {
     block: BlockMap[keyof BlockMap]
   ): boolean {
     // parent_table can be undefined
-    return block.value?.parent_table === `space`
+    return block.value?.parent_table === `space`;
   }
 
   /**
@@ -65,14 +65,14 @@ export class UnofficialNotionAPIUtil {
   public static extractTypeUnsafeNotionContentNodeFromBlock(
     block: BlockMap[keyof BlockMap]
   ): null | NotionContentNodeUnofficialAPI {
-    const title = UnofficialNotionAPIUtil.getTitleFromPageBlock(block)
-    const type = block.value.type
-    const spaceId = block.value.space_id ?? `Unknown space id`
+    const title = UnofficialNotionAPIUtil.getTitleFromPageBlock(block);
+    const type = block.value.type;
+    const spaceId = block.value.space_id ?? `Unknown space id`;
 
-    if (!isNotionContentNodeType(type)) return null
+    if (!isNotionContentNodeType(type)) return null;
 
     if (type === `collection_view_page`) {
-      if (!block.value.collection_id) return null
+      if (!block.value.collection_id) return null;
 
       return {
         id: block.value.id,
@@ -81,7 +81,7 @@ export class UnofficialNotionAPIUtil {
         spaceId,
         parentId: `none`,
         collection_id: block.value.collection_id,
-      }
+      };
     }
 
     return {
@@ -90,6 +90,6 @@ export class UnofficialNotionAPIUtil {
       type,
       spaceId,
       parentId: `none`,
-    }
+    };
   }
 }
