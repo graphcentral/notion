@@ -18,7 +18,8 @@
     "scraper:dev": "npm run dev -w packages/notion-graph-scraper",
     "scraper:compile": "npm run compile -w packages/notion-graph-scraper",
     "scraper:package": "npm run package -w packages/notion-graph-scraper",
-    "fe:dev": "npm run dev -w packages/notion-graph-frontend"
+    "fe:dev": "npm run dev -w packages/notion-graph-frontend",
+    "fe:test": "npm run test -w packages/notion-graph-frontend"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.9.1",
