@@ -1,0 +1,57 @@
+x-custom_env: &custom_env
+  tty: true
+  env_file:
+    - .docker.common.env
+
+x-client_config: &client_config
+  stdin_open: true
+  environment:
+    # hot reloading
+    CHOKIDAR_USEPOLLING: "true"
+  # links:
+    # - server
+
+version: "3.8"
+services:
+  # api:
+  #   << : *custom_env
+  #   container_name: notion-graph-backend
+  #   build: notion-graph-backend
+  #   ports:
+  #     - "83:3333"
+  #   volumes:
+  #     - ./packages/notion-graph-backend:/notion-graph-backend
+  #   tty: true
+  #   links:
+  #     - "database:database"
+  web:
+    << : *custom_env
+    << : *client_config
+    container_name: notion-graph-frontend
+    build:
+      context: ./packages/notion-graph-frontend
+      dockerfile: ../../notion-graph-frontend.Dockerfile
+    ports:
+      - "8081:8000"
+    volumes:
+      - ./packages/notion-graph-frontend:/docker/packages/notion-graph-frontend
+      - './packages/notion-graph-frontend/node_modules:/docker/packages/notion-graph-frontend/node_modules'
+      - './node_modules:/docker/node_modules'
+  # database:
+  #   image: mysql
+  #   container_name: project-database
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   restart: always
+  #   volumes:
+  #     - "./notion-graph-backend/database/db:/database"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: hashProj123
+  #     MYSQL_DATABASE: project
+  #     MYSQL_USER: root
+  #     MYSQL_PASSWORD: hashProj123
+  #   tty: true
+  #   ports:
+  #     - "3308:3306"
+networks:
+  default:
+      name: notion-graph-net
