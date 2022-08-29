@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.mjs",
   "scripts": {
-    "dev": "node --loader=ts-node/esm index.ts"
+    "dev": "node --experimental-specifier-resolution=node --loader=ts-node/esm ./index.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "pusher": "^5.1.1-beta"
   },
   "devDependencies": {
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.0"
   }
 }
