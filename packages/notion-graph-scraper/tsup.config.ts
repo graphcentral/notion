@@ -10,5 +10,6 @@ export default defineConfig({
   dts: true,
   target: `node16`,
   platform: `node`,
-  format: [`esm`],
+  noExternal: [`notion-client`],
+  format: [`esm`, `cjs`],
 });
