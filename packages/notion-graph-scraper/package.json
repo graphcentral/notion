@@ -2,8 +2,17 @@
   "name": "@graphcentral/notion-graph-scraper",
   "version": "0.1.0-rc.6",
   "description": "scrapes pages from Notion given a root page",
-  "main": "dist/lib.mjs",
-  "types": "dist/lib.d.ts",
+  "main": "./dist/lib.js",
+  "module": "./dist/lib.mjs",
+  "types": "./dist/lib.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/lib.js",
+      "import": "./dist/lib.mjs",
+      "types": "./dist/lib.d.ts"      
+    }
+  },
+
   "files": ["dist"],
   "bugs": {
     "url": "https://github.com/graphcentral/notion/issues"

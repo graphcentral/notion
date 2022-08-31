@@ -1,0 +1,30 @@
+service: notion-graph-backend-serverless-service
+org: 9oelm
+app: 'notion-graph-backend-serverless-app'
+frameworkVersion: ^3.22
+plugins: [serverless-plugin-typescript, serverless-offline]
+custom: 
+  webpack:
+    webpackConfig: 'webpack.serverless.config.js' 
+    includeModules: true # Node modules configuration for packaging
+    packager: 'npm' 
+    excludeFiles: src/**/*.test.js
+  serverlessPluginTypescript: 
+    tsConfigFileLocation: ./tsconfig.json    
+provider: 
+  name: 'aws'
+  timeout: 60
+  runtime: 'nodejs16.x'
+  environment:
+    IS_SERVERLESS: '1'
+    # AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+functions: 
+  graph: 
+    handler: ./functions/graphs/handler.graphs
+    events: 
+      - http: 
+          method: post
+          path: graphs         
+      - http: 
+          method: get
+          path: graphs/{graphId}          
