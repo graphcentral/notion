@@ -1,6 +1,21 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import to from "await-to-js";
+import mongoose from "mongoose";
 import { ENV } from "../env";
 
-export const mongoClient = new MongoClient(ENV.MONGODB_URL, {
-  serverApi: ServerApiVersion.v1,
-});
+export let connectErr: Error | null | undefined = undefined;
+
+(async () => {
+  const [mongoClientConnectErr] = await to(mongoose.connect(ENV.MONGODB_URL));
+  connectErr = mongoClientConnectErr;
+})();
+
+export function waitUntilMongoClientConnected(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (connectErr) reject(connectErr);
+    else if (connectErr === null) resolve();
+    mongoose.connection.once(`open`, (err) => {
+      if (err) reject(err);
+      resolve();
+    });
+  });
+}

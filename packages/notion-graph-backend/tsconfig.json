@@ -16,7 +16,7 @@
     "noImplicitThis": true,                
     "alwaysStrict": true,                  
     "noFallthroughCasesInSwitch": true,    
-
+    "experimentalDecorators": true,
     "moduleResolution": "node",           
     "esModuleInterop": true                
   }
