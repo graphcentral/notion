@@ -1,5 +1,4 @@
 import { NotionAPI } from "notion-client";
-import { ErrorObject } from "serialize-error";
 import { Errors } from "../errors";
 import { toEnhanced } from "./global-util";
 import { RequestQueue } from "./request-queue";
@@ -27,7 +26,7 @@ import { createLogger } from "./logger";
  */
 export class NotionGraph {
   private unofficialNotionAPI: NotionAPI;
-  private errors: (ErrorObject | Error)[] = [];
+  private errors: Error[] = [];
   private nodes: Record<
     NotionContentNodeUnofficialAPI[`id`],
     NotionContentNodeUnofficialAPI
@@ -159,7 +158,7 @@ export class NotionGraph {
     this.logger = createLogger(verbose);
   }
 
-  private accumulateError(err: ErrorObject | Error) {
+  private accumulateError(err: Error) {
     this.errors.push(err);
   }
 
@@ -489,7 +488,7 @@ export class NotionGraph {
     links: ReturnType<
       UndirectedNodesGraph<NotionContentNodeUnofficialAPI>[`getD3JsEdgeFormat`]
     >;
-    errors: (ErrorObject | Error)[];
+    errors: Error[];
   }> {
     const defaultReturn = {
       links: [],
