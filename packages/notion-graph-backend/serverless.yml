@@ -13,7 +13,7 @@ custom:
     tsConfigFileLocation: ./tsconfig.json    
 provider: 
   name: 'aws'
-  timeout: 60
+  timeout: 180
   runtime: 'nodejs16.x'
   environment:
     IS_SERVERLESS: '1'
@@ -27,4 +27,8 @@ functions:
           path: graphs         
       - http: 
           method: get
-          path: graphs/{graphId}          
+          path: graphs
+          request:
+            parameters:
+              querystrings:
+                notion_page_url: true 

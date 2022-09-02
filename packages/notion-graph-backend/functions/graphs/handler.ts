@@ -1,53 +1,91 @@
 import { NotionGraph } from "@graphcentral/notion-graph-scraper";
 import serverless from "serverless-http";
 import to from "await-to-js";
-import express from "express";
-import { mongoClient } from "../../model";
-
-async () => {
-  const [mongoClientConnectErr] = await to(mongoClient.connect());
-  if (mongoClientConnectErr) {
-  }
-};
-const createGraph = async () => {
-  const notionGraph = new NotionGraph({
-    maxDiscoverableNodes: 200,
-    maxDiscoverableNodesInOtherSpaces: 200,
-    verbose: false,
-    maxConcurrentRequest: 80,
-  });
-  return notionGraph.buildGraphFromRootNode(
-    // notion help page
-    `e040febf70a94950b8620e6f00005004`
-  );
-};
+import express, { Response } from "express";
+import { waitUntilMongoClientConnected } from "../../model";
+import {
+  validateGetGraphQuery,
+  validateNotionGraphInfo,
+} from "../../middleware/graphs/validators";
+import { transformNotionPageUrlToId } from "../../middleware/graphs/transformer";
+import {
+  GetGraphsLocals,
+  PostGraphsLocals,
+} from "../../middleware/graphs/types";
+import { GraphModel } from "../../model/graph";
 
 const app = express();
 app.use(express.json());
 
-app.post(`/graphs`, async (req, res, next) => {
-  console.log(req.body);
-  const [maybeGraphInitResultErr, maybeGraphInitResult] = await to(
-    createGraph()
+[validateNotionGraphInfo, transformNotionPageUrlToId].forEach((middleware) => {
+  app.post(`/graphs`, middleware);
+});
+app.post(`/graphs`, async (req, res: Response<any, PostGraphsLocals>, next) => {
+  const { notionPageId } = res.locals;
+  if (!notionPageId) {
+    return res
+      .status(500)
+      .json({ message: `notionPageId is undefined or null` });
+  }
+  const notionGraph = new NotionGraph({
+    maxDiscoverableNodes: 500,
+    maxDiscoverableNodesInOtherSpaces: 500,
+    verbose: true,
+    maxConcurrentRequest: 80,
+  });
+  const [maybeGraphBuildErr, maybeGraphBuildResult] = await to(
+    notionGraph.buildGraphFromRootNode(notionPageId)
   );
-  if (maybeGraphInitResultErr || !maybeGraphInitResult) {
+  if (maybeGraphBuildErr || !maybeGraphBuildResult) {
     return res.status(500).json({ message: `failed to create graph` });
   }
-  const [maybeGraphsCollectionErr, maybeGraphsCollection] = await to(
-    mongoClient.db(`notion-graph`).createCollection(`graphs`)
-  );
-  if (maybeGraphsCollectionErr || !maybeGraphsCollection) {
-    return res.status(500).json({ message: `failed to create collection` });
+  const [mongoConnectErr] = await to(waitUntilMongoClientConnected());
+  if (mongoConnectErr) {
+    return res.status(500).json({ message: `failed to connect to db` });
   }
-  // const [maybe, maybe2] = await to(
-  // maybeGraphsCollection.insertOne({ _id: })
-  // );
+  const { nodes, links } = maybeGraphBuildResult;
+  const graph = new GraphModel({
+    _id: notionPageId,
+    nodes,
+    links,
+  });
+  const [insertGraphErr] = await to(graph.save());
 
-  return res.status(200).json(maybeGraphInitResult);
+  if (insertGraphErr) {
+    return res.status(500).json({
+      message: `failed to insert graph into collection`,
+      error: JSON.stringify(insertGraphErr),
+    });
+  }
+
+  return res.status(200).json(maybeGraphBuildResult);
 });
 
-app.get(`/graphs/:id`, async (req, res, next) => {
-  return res.status(200).json({});
+[validateGetGraphQuery].forEach((middleware) => {
+  app.get(`/graphs`, middleware);
+});
+app.get(`/graphs`, async (req, res: Response<any, GetGraphsLocals>, next) => {
+  const { notionPageId } = res.locals;
+  if (!notionPageId) {
+    return res
+      .status(500)
+      .json({ message: `notionPageId is undefined or null` });
+  }
+  const [findGraphByIdErr, findGraphByIdResult] = await to(
+    GraphModel.findById(notionPageId).exec()
+  );
+  if (findGraphByIdErr) {
+    return res.status(500).json({
+      message: `failed to find a graph`,
+      error: JSON.stringify(findGraphByIdErr),
+    });
+  } else if (findGraphByIdResult === null) {
+    return res
+      .status(500)
+      .json({ message: `graph exists, but nodes or links do not exist` });
+  }
+
+  return res.status(200).json(findGraphByIdResult);
 });
 
 module.exports.graphs = serverless(app);
