@@ -32,8 +32,8 @@ import fs from "fs"
     verbose: true,
   })
   const graph = await notionGraph.buildGraphFromRootNode(
-    // notion help page
-    `e040febf70a94950b8620e6f00005004`
+    // Some random Japanese blog
+    `95fcfe03257541c5aaa21dd43bdbc381`
   )
   console.log(graph.nodes.length)
   console.log(graph.links.length)
@@ -59,6 +59,10 @@ The graph will be an object of this type:
 ```
 
 Then, you can directly use this as an input to [@graphcentral/graph](https://github.com/graphcentral/graph) to visualize it on the web as a force layout graph.
+
+## Example setup
+
+An example setup is at [@graphcentral/notion-scrape-example](https://github.com/graphcentral/notion-scrape-example).
 
 ## Use ES6 module instead of Commonjs
 
